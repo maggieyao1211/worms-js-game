@@ -1,4 +1,4 @@
-# worms-js-game
+# Minions-V.S-Worms-js-game
 Introduction
 Minion V.S Worms is a JavaScript browser game based on Worms:WMD https://en.wikipedia.org/wiki/Worms_W.M. The worms walk from the edges of the screen to the center of the house. The game will end if the worm touch you(Minion) and your Health downs to zero.
 
