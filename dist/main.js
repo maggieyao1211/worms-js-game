@@ -86,14 +86,39 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/game.js":
+/*!*********************!*\
+  !*** ./src/game.js ***!
+  \*********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _minion__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./minion */ \"./src/minion.js\");\n\n\nclass Game {\n    constructor(canvas) {\n        this.canvas = canvas;\n        const minionImg = new Image();\n        minionImg.src = './dist/assets/minions.png';\n        this.minion = new _minion__WEBPACK_IMPORTED_MODULE_0__[\"default\"](minionImg);\n        this.animate = this.animate.bind(this)\n        requestAnimationFrame(this.animate.bind(this));\n    }\n\n  animate(time) {\n    const ctx = this.canvas.getContext('2d');\n    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);\n    this.minion.draw(ctx, time);\n    requestAnimationFrame(this.animate);\n  }\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Game);\n\n//# sourceURL=webpack:///./src/game.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
   \**********************/
-/*! no static exports found */
-/***/ (function(module, exports) {
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-eval("\n\n//# sourceURL=webpack:///./src/index.js?");
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _game__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./game */ \"./src/game.js\");\n\n\ndocument.addEventListener(\"DOMContentLoaded\", () => {\n    const canvas = document.getElementById('battlefield');\n    const game = new _game__WEBPACK_IMPORTED_MODULE_0__[\"default\"](canvas);\n});\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/minion.js":
+/*!***********************!*\
+  !*** ./src/minion.js ***!
+  \***********************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n\nclass Minion {\n    constructor(img) {\n        this.posX = 1080;\n        this.posY = 780;\n        this.horizVel = 0;\n        this.vertVel = 0;\n        this.falling = false;\n        this.keyDownHandler = this.keyDownHandler.bind(this);\n        this.keyUpHandler = this.keyUpHandler.bind(this);\n        this.img = img;\n        // this.onGround = this.onGround.bind(this);\n        // this.minion = document.getElementById('minion');\n        // this.minionStyle = this.minion.style;\n        // this.minionStyle.left = '1800px';\n        // this.minionStyle.top = '600px';\n        \n        document.addEventListener('keydown', e => this.keyDownHandler(e), false);\n        document.addEventListener('keyup', e => this.keyUpHandler(e), false);\n    }\n\n    draw(ctx) {\n        if (this.destPosX && this.posX != this.destPosX && this.isInMinionMoveRange()) {\n            this.posX += 0.5 * this.horizVel;\n        }\n        if (this.vertVel != 0 && this.posY > this.destPosY && !this.falling) {\n            this.posY -= 0.5 * this.vertVel;\n        } \n        if (this.vertVel != 0 && this.posY === this.destPosY || this.falling) {\n            this.posY += 0.5 * this.vertVel;\n            if (this.onGround()) {\n                this.falling = false;\n                this.vertVel = 0;\n            } else {\n                this.falling = true;\n            }\n        }\n        ctx.drawImage(this.img, this.posX, this.posY, 140, 120);\n    }\n\n    keyDownHandler(e) {\n        e.preventDefault();\n        const keyCode = e.keyCode;\n        switch (keyCode) {\n            case 65: // 'A'\n            case 68: // 'D'\n                    this.horizVel = 10 * (keyCode === 65 ? -1 : 1);\n                    this.destPosX = this.posX + 100 * (keyCode === 65 ? -1 : 1);\n                break;\n            case 87: // 'W\n                if (this.vertVel === 0) {\n                    this.vertVel = 10;\n                    this.destPosY = this.posY - 150; \n                }\n                break;\n            default:\n                break;\n        }\n    }\n\n    keyUpHandler(e) {\n        e.preventDefault();\n    }\n\n    isInMinionMoveRange() {\n        return this.horizVel < 0 ? this.posX >= 780 : this.posX <= 1380;\n    }\n\n    onGround() {\n        return this.posY === 780;\n    }\n}\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Minion);\n\n//# sourceURL=webpack:///./src/minion.js?");
 
 /***/ })
 
