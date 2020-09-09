@@ -14,7 +14,7 @@ class Game {
     this.bananas = [];
 
     this.animate = this.animate.bind(this)
-    requestAnimationFrame(this.animate.bind(this));
+    requestAnimationFrame(this.animate);
   }
 
   keyDownHandler(e) {
