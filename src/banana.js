@@ -7,6 +7,8 @@ class Banana {
         this.releaseTime = new Date().getTime() / 1000;
         this.releaseVel = 30;
         this.img = img;
+        this.width = 70;
+        this.height = 60;
     }
 
     draw(ctx) {
@@ -15,7 +17,7 @@ class Banana {
         this.posX -= 7.5 * timeDiff * this.dirMultiplier;
         const currentVel = this.releaseVel - 26 * timeDiff;
         this.posY -= currentVel * timeDiff;
-        ctx.drawImage(this.img, this.posX, this.posY, 70, 60);
+        ctx.drawImage(this.img, this.posX, this.posY, this.width, this.height);
     }
 }
 

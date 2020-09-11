@@ -8,6 +8,9 @@ class Minion {
         this.falling = false;
         this.keyDownHandler = this.keyDownHandler.bind(this);
         this.keyUpHandler = this.keyUpHandler.bind(this);
+        this.health = 500;
+        this.width = 140;
+        this.height = 120;
         this.img = img;
         
         document.addEventListener('keydown', e => this.keyDownHandler(e), false);
@@ -30,7 +33,7 @@ class Minion {
                 this.falling = true;
             }
         }
-        ctx.drawImage(this.img, this.posX, this.posY, 140, 120);
+        ctx.drawImage(this.img, this.posX, this.posY, this.width, this.height);
     }
 
     keyDownHandler(e) {
@@ -71,6 +74,11 @@ class Minion {
 
     onGround() {
         return this.posY === 780;
+    }
+
+    collideWithWorm(worm) {
+        return worm.posX < this.posX + this.width && worm.posX + worm.width > this.posX && 
+            worm.posY < this.posY + this.height && worm.posY + worm.height > this.posY;
     }
 }
 

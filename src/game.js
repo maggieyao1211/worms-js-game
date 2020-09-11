@@ -6,6 +6,8 @@ class Game {
   constructor(canvas) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
+    this.score = 0;
+    this.kills = 0;
 
     const minionImg = new Image();
     minionImg.src = './dist/assets/minion.png';
@@ -16,6 +18,7 @@ class Game {
     this.worms = [];
 
     this.lastWormBornTime = new Date().getTime() / 1000;
+    this.lastWormWithGolfBornTime = new Date().getTime() / 1000;
 
     document.addEventListener('keydown', e => this.keyDownHandler(e), false);
 
@@ -43,6 +46,17 @@ class Game {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.minion.draw(this.ctx);
 
+    this.ctx.fillStyle = "Yellow";
+    this.ctx.font = "20px 'Grandstander', cursive";
+    this.ctx.fillRect(50, 50, this.minion.health, 30);
+    this.ctx.fillText("Minion Health", 50, 35);
+
+    this.ctx.fillText("Score:", 50, 115);
+    this.ctx.fillText(this.score, 115, 115);
+
+    this.ctx.fillText("Kills:", 50, 150);
+    this.ctx.fillText(this.kills, 115, 150);
+
     // clear outdated bananas
     const currentTime = new Date().getTime() / 1000;
     while (this.bananas.length > 0 && (currentTime - this.bananas[0].releaseTime) >= 20) {
@@ -60,10 +74,37 @@ class Game {
       this.lastWormBornTime = currentTime;
       const wormImg = new Image();
       wormImg.src = './dist/assets/worm.png';
-      this.worms.push(new Worm(wormImg, 2400, 810, 1));
+      this.worms.push(new Worm(wormImg, 2400, 810, 100, 80, 50, 1));
+    }
+    if (currentTime - this.lastWormWithGolfBornTime >= 4) {
+      this.lastWormWithGolfBornTime = currentTime;
+      const wormImg = new Image();
+      wormImg.src = './dist/assets/worm_with_golf.png';
+      this.worms.push(new Worm(wormImg, 0, 820, 140, 120, 40, -1));
     }
 
+    this.deadWorms = [];
+    this.worms.forEach((worm, i) => {
+      this.bananas.forEach(banana => {
+        if (worm.collideWithBanana(banana)) {
+          this.deadWorms.push(i);
+          this.score += worm.score;
+        }
+      });
+      if (this.minion.collideWithWorm(worm)) {
+        this.deadWorms.push(i);
+        this.minion.health -= 100;
+      }
+    });
+
+    const filteredWorms = this.worms.filter((_worm, i) => !this.deadWorms.includes(i));
+    this.kills += this.worms.length - filteredWorms.length;
+    this.worms = filteredWorms;
+    this.deadWorms = [];
+
     this.worms.forEach(worm => worm.draw(this.ctx));
+
+
 
     requestAnimationFrame(this.animate);
   }
