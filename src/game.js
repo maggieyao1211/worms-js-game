@@ -89,6 +89,7 @@ class Game {
         if (worm.collideWithBanana(banana)) {
           this.deadWorms.push(i);
           this.score += worm.score;
+          this.kills += 1;
         }
       });
       if (this.minion.collideWithWorm(worm)) {
@@ -97,9 +98,7 @@ class Game {
       }
     });
 
-    const filteredWorms = this.worms.filter((_worm, i) => !this.deadWorms.includes(i));
-    this.kills += this.worms.length - filteredWorms.length;
-    this.worms = filteredWorms;
+    this.worms = this.worms.filter((_worm, i) => !this.deadWorms.includes(i));
     this.deadWorms = [];
 
     this.worms.forEach(worm => worm.draw(this.ctx));
