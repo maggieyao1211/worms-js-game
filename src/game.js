@@ -4,9 +4,28 @@ import Worm from './worm';
 import { backgroundMusic, gameOverMusic, wormHurtSound } from './sounds';
 
 class Game {
-  constructor(canvas) {
+  constructor(canvas, musicController, soundController) {
     this.canvas = canvas;
     this.ctx = canvas.getContext('2d');
+
+    this.isMusicOn = true;
+    this.musicController = musicController;
+    this.musicController.onclick = () => { 
+      this.isMusicOn = !this.isMusicOn;
+      this.musicController.innerHTML = this.isMusicOn ? 'Music: On' : 'Music: Off';
+      if (this.isMusicOn) {
+        this.backgroundMusic.play(this.isMusicOn);
+      } else {
+        this.backgroundMusic.pause();
+      }
+    };
+
+    this.isSoundOn = true;
+    this.soundController = soundController;
+    this.soundController.onclick = () => { 
+      this.isSoundOn = !this.isSoundOn;
+      this.soundController.innerHTML = this.isSoundOn ? 'Sound: On' : 'Sound: Off';
+    };
 
     this.isGameStarted = false;
 
@@ -52,9 +71,9 @@ class Game {
         case 32: // 'Space'
           this.isGameStarted = !this.isGameStarted;
           if (this.isGameStarted) {
-            this.backgroundMusic.play();
+            this.backgroundMusic.play(this.isMusicOn);
           } else {
-            this.backgroundMusic.pause();
+            this.backgroundMusic.pause(this.isMusicOn);
           }
           if (this.minion.health <= 0) {
             this.minion.health = 500;
@@ -79,7 +98,7 @@ class Game {
       this.ctx.fillText(this.kills, 1140, 400);
       this.backgroundMusic.pause();
       if (!this.hasGameOverMusicPlayed) {
-        gameOverMusic.play();
+        gameOverMusic.play(this.isMusicOn);
         this.hasGameOverMusicPlayed = true;
       }
       this.isGameStarted = false;
@@ -129,14 +148,14 @@ class Game {
     this.worms.forEach((worm, i) => {
       this.bananas.forEach(banana => {
         if (worm.collideWithBanana(banana)) {
-          wormHurtSound.play();
+          wormHurtSound.play(this.isSoundOn);
           this.deadWorms.push(i);
           this.score += worm.score;
           this.kills += 1;
         }
       });
       if (this.minion.collideWithWorm(worm)) {
-        wormHurtSound.play();
+        wormHurtSound.play(this.isSoundOn);
         this.deadWorms.push(i);
         this.minion.health -= 100;
       }

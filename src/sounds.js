@@ -5,8 +5,12 @@ class Sound {
         this.sound.volume = volume;
     }
 
-    play() {
-        this.sound.play();
+    play(isMusicOn) {
+        if (isMusicOn) {
+            this.sound.play();
+        } else {
+            this.sound.pause();
+        }
     }
 
     pause() {

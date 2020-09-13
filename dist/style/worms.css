@@ -25,6 +25,22 @@ body {
     margin-bottom: 1rem;
 }
 
+#music-sound-wrapper {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    justify-content: space-between;
+}
+
+#music-controller {
+    margin-right: 3rem;
+    cursor: pointer;
+}
+
+#sound-controller {
+    margin-left: 3rem;
+    cursor: pointer;
+}
+
 #battlefield-container {
     position: relative;
     width: 100%;
