@@ -24,9 +24,10 @@
   "license": "ISC",
   "homepage": "https://github.com/maggieyao1211/worms-js-game#readme",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.1",
+    "express": "^4.14.1",
     "webpack": "^4.44.1",
-    "webpack-cli": "^3.3.12",
-    "express": "^4.14.1"
+    "webpack-cli": "^3.3.12"
   },
   "devDependencies": {}
 }
